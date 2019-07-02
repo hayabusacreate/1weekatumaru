@@ -48,4 +48,12 @@ public class EnemyMOve : MonoBehaviour
         // Debug.Log(dis);
         rigidbody.MovePosition(new Vector3(dis * Mathf.Sin(Time.time * rotatspeed), transform.position.y, dis * Mathf.Cos(Time.time * rotatspeed)));
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag=="player")
+        {
+            Destroy(gameObject);
+        }
+    }
 }
