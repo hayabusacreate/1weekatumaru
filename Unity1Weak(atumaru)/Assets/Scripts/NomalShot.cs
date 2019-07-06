@@ -22,48 +22,52 @@ public class NomalShot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(intar<=0)
+        //if (intar <= 0)
         //{
         //    shot();
         //    intar = shotinterval;
-        //}else
+        //}
+        //else
         //{
-        //    intar-=0.1f;
+        //    intar -= 0.1f;
         //}
         Move();
 
     }
-    //public Vector3 GetDirection(float angle)
-    //{
-    //    return new Vector3
-    //    (
-    //        Mathf.Cos(angle * Mathf.Deg2Rad),
-    //        0,
-    //        Mathf.Sin(angle * Mathf.Deg2Rad)
-    //        );
-    //}
-    //void shot()
-    //{
-    //    var pos = transform.localPosition; // プレイヤーの位置
-    //    var rot = transform.localRotation; // プレイヤーの向き
-    //    // 発射する弾を生成する
-    //    var shot = Instantiate(gameObject, pos, rot);
-    //    // 弾の発射角度をベクトルに変換する
-    //    var direction = GetDirection(rot.y);
+    public Vector3 GetDirection(float angle)
+    {
+        return new Vector3
+        (
+            Mathf.Cos(angle * Mathf.Deg2Rad),
+            0,
+            Mathf.Sin(angle * Mathf.Deg2Rad)
+            );
+    }
+    void shot()
+    {
+        var pos = transform.localPosition; // プレイヤーの位置
+        var rot = transform.localRotation; // プレイヤーの向き
+        // 発射する弾を生成する
+        var shot = Instantiate(gameObject, pos, rot);
+        // 弾の発射角度をベクトルに変換する
+        var direction = GetDirection(rot.y);
 
-    //    // 発射角度と速さから速度を求める
-    //    velocity = direction * shotspeed;
+        // 発射角度と速さから速度を求める
+        velocity = direction * shotspeed;
 
-    //    // 弾が進行方向を向くようにする
-    //    var angles = transform.localEulerAngles;
-    //    angles.z = rot.y - 90;
-    //    transform.localEulerAngles = angles;
+        // 弾が進行方向を向くようにする
+        var angles = transform.localEulerAngles;
+        angles.z = rot.y - 90;
+        transform.localEulerAngles = angles;
 
-    //    // 2 秒後に削除する
-    //    //Destroy(gameObject, 2);
-    //    // 弾を発射する方向と速さを設定する
+        tragetpos += (transform.position - player.transform.position) * shotspeed;
+        tragetpos *= attenuation;
+        gameObject.transform.position+=velocity += tragetpos *= Time.deltaTime;
+        // 2 秒後に削除する
+        //Destroy(gameObject, 2);
+        // 弾を発射する方向と速さを設定する
 
-    //}
+    }
     //// 弾を発射する時に初期化するための関数
     //public void Init(float angle, float speed)
     //{
@@ -85,11 +89,30 @@ public class NomalShot : MonoBehaviour
     {
         var pos = transform.localPosition; // プレイヤーの位置
         var rot = transform.localRotation; // プレイヤーの向き
+        // 発射する弾を生成する
+        //var shot = Instantiate(gameObject, pos, rot);
+        // 弾の発射角度をベクトルに変換する
+        var direction = GetDirection(rot.y);
+
+        // 発射角度と速さから速度を求める
+        velocity = direction * shotspeed;
+        player = GameObject.Find("Player");
+
+        //var pos = transform.localPosition; // プレイヤーの位置
+        //var rot = transform.localRotation; // プレイヤーの向き
         //Instantiate(gameObject, pos, rot);
-        tragetpos -= (player.transform.position - transform.position) * shotspeed;
-        tragetpos *= attenuation;
-        gameObject.transform.position += tragetpos *= Time.deltaTime;
+        //tragetpos += (transform.position - player.transform.position) + direction;
+        //tragetpos *= attenuation;
+        gameObject.transform.position +=velocity *= Time.deltaTime ;
         //transform.position += new Vector3(Mathf.Sin(Time.time * speed), 0, Mathf.Cos(Time.time * speed));
+        Destroy(gameObject, 2);
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag=="enemy")
+        {
+            Destroy(gameObject);
+        }
     }
 
 }

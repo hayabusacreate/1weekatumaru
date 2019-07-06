@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyMOve : MonoBehaviour
 {
@@ -51,7 +52,12 @@ public class EnemyMOve : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag=="player")
+        if(collision.gameObject.tag=="Player")
+        {
+            Destroy(collision.gameObject);
+            SceneManager.LoadScene("GameOver");
+        }
+        if(collision.gameObject.tag=="Shot")
         {
             Destroy(gameObject);
         }
