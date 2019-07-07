@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shot : MonoBehaviour
+public class CreateUlepon : MonoBehaviour
 {
     public GameObject gameObject;
+
+    private int count;
     // Start is called before the first frame update
     void Start()
     {
-        
+        count = Ulepon.ulepon;
     }
 
     // Update is called once per frame
     void Update()
     {
-        shot();
-    }
-   public void shot()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (count > 0)
         {
-            Instantiate(gameObject, transform.position, transform.rotation);
+            Instantiate(gameObject, transform.position, Quaternion.identity);
+            count--;
         }
     }
 }

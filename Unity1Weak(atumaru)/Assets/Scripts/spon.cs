@@ -5,15 +5,16 @@ using UnityEngine;
 public class spon : MonoBehaviour
 {
     public GameObject[] enemy,ulepon;
-    
+    public Vector3[] enemypos;
     public int minX,minZ,maxX,maxZ;
-    private int randomX,randomZ,enemyrnd;
+    private int randomX, randomZ, enemyrnd, spornrnd;
     public int spornint,uleponsporn;
-    private int sporncount=0,uleponcount;
+   public static int sporncount=0,uleponcount;
     // Start is called before the first frame update
     void Start()
     {
         sporncount = 0;
+        uleponcount = 0;
     }
 
     // Update is called once per frame
@@ -31,10 +32,9 @@ public class spon : MonoBehaviour
             Debug.Log("b");
             for (int i = spornint; i > 0; i--)
             {
-                randomX = Random.Range(minX, maxX);
-                randomZ = Random.Range(minZ, maxZ);
+                spornrnd = Random.Range(0, enemypos.Length);
                 enemyrnd = Random.Range(0, enemy.Length);
-                Instantiate(enemy[0], new Vector3(randomX, 0, randomZ), Quaternion.identity);
+                Instantiate(enemy[0], enemypos[spornrnd], Quaternion.identity);
                 sporncount++;
                 Debug.Log("c");
             }

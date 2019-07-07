@@ -5,7 +5,7 @@ using UnityEngine;
 public class NomalShot : MonoBehaviour
 {
     public GameObject player;
-    private Vector3 tragetpos;
+    private Vector3 tragetpos,tagpos;
     public float attenuation;
     public GameObject gameObject;
     public float shotspeed;
@@ -17,6 +17,8 @@ public class NomalShot : MonoBehaviour
     void Start()
     {
         intar = shotinterval;
+        player = GameObject.Find("Player");
+        tagpos = player.transform.position;
     }
 
     // Update is called once per frame
@@ -49,20 +51,20 @@ public class NomalShot : MonoBehaviour
         var rot = transform.localRotation; // プレイヤーの向き
         // 発射する弾を生成する
         var shot = Instantiate(gameObject, pos, rot);
-        // 弾の発射角度をベクトルに変換する
-        var direction = GetDirection(rot.y);
+        //// 弾の発射角度をベクトルに変換する
+        //var direction = GetDirection(rot.y);
 
-        // 発射角度と速さから速度を求める
-        velocity = direction * shotspeed;
+        //// 発射角度と速さから速度を求める
+        //velocity = direction * shotspeed;
 
-        // 弾が進行方向を向くようにする
-        var angles = transform.localEulerAngles;
-        angles.z = rot.y - 90;
-        transform.localEulerAngles = angles;
+        //// 弾が進行方向を向くようにする
+        //var angles = transform.localEulerAngles;
+        //angles.z = rot.y - 90;
+        //transform.localEulerAngles = angles;
 
-        tragetpos += (transform.position - player.transform.position) * shotspeed;
+        tragetpos -= (player.transform.position - transform.position) * shotspeed;
         tragetpos *= attenuation;
-        gameObject.transform.position+=velocity += tragetpos *= Time.deltaTime;
+        shot.gameObject.transform.position+=velocity += tragetpos *= Time.deltaTime;
         // 2 秒後に削除する
         //Destroy(gameObject, 2);
         // 弾を発射する方向と速さを設定する
@@ -96,14 +98,14 @@ public class NomalShot : MonoBehaviour
 
         // 発射角度と速さから速度を求める
         velocity = direction * shotspeed;
-        player = GameObject.Find("Player");
+
 
         //var pos = transform.localPosition; // プレイヤーの位置
         //var rot = transform.localRotation; // プレイヤーの向き
         //Instantiate(gameObject, pos, rot);
-        //tragetpos += (transform.position - player.transform.position) + direction;
-        //tragetpos *= attenuation;
-        gameObject.transform.position +=velocity *= Time.deltaTime ;
+        tragetpos += (transform.position - tagpos) + direction;
+        tragetpos *= attenuation;
+        gameObject.transform.position+=tragetpos  *= Time.deltaTime ;
         //transform.position += new Vector3(Mathf.Sin(Time.time * speed), 0, Mathf.Cos(Time.time * speed));
         Destroy(gameObject, 2);
     }
